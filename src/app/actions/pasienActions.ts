@@ -27,7 +27,8 @@ export async function createPasien(formData: FormData) {
   redirect("/pasien");
 }
 
-export async function updatePasien(id: string, formData: FormData) {
+export async function updatePasien(formData: FormData) {
+  const id = formData.get("id") as string;
   const nama = formData.get("nama") as string;
   const tanggalLahir = formData.get("tanggalLahir") as string;
   const jenisKelamin = formData.get("jenisKelamin") as "LAKI_LAKI" | "PEREMPUAN";

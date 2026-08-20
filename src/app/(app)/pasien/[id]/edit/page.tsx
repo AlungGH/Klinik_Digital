@@ -16,11 +16,6 @@ export default async function EditPasienPage({
   const pasien = await prisma.pasien.findUnique({ where: { id } });
   if (!pasien) notFound();
 
-  const action = async (formData: FormData) => {
-    "use server";
-    await updatePasien(id, formData);
-  };
-
   return (
     <div className="content-area fade-in">
       <div className="page-header">
@@ -45,7 +40,8 @@ export default async function EditPasienPage({
       </div>
 
       <div className="glass-card" style={{ padding: "32px", maxWidth: "720px" }}>
-        <form action={action}>
+        <form action={updatePasien}>
+          <input type="hidden" name="id" value={id} />
           <div className="form-grid">
             <div className="form-group">
               <label className="label">Nomor Rekam Medis</label>
