@@ -31,7 +31,7 @@ export default function TambahPasienPage() {
         </div>
       </div>
 
-      <div className="glass-card" style={{ padding: "32px", maxWidth: "720px" }}>
+      <div className="glass-card form-card" style={{ maxWidth: "720px" }}>
         <form action={createPasien}>
           <div className="form-grid">
             <div className="form-group">
@@ -113,7 +113,7 @@ export default function TambahPasienPage() {
             </div>
           </div>
 
-          <div style={{ display: "flex", gap: "12px", marginTop: "28px" }}>
+          <div className="form-actions">
             <button type="submit" className="btn-primary" id="btn-simpan-pasien">
               <UserPlus size={16} />
               Simpan Pasien

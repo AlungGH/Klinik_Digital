@@ -40,7 +40,7 @@ export default async function BuatResepPage({
         </div>
       </div>
 
-      <div className="glass-card" style={{ padding: "32px", maxWidth: "800px" }}>
+      <div className="glass-card form-card" style={{ maxWidth: "800px" }}>
         <ResepForm pasienList={pasienList} defaultPasienId={pasienId} />
       </div>
     </div>

@@ -39,7 +39,7 @@ export default async function EditPasienPage({
         </div>
       </div>
 
-      <div className="glass-card" style={{ padding: "32px", maxWidth: "720px" }}>
+      <div className="glass-card form-card" style={{ maxWidth: "720px" }}>
         <form action={updatePasien}>
           <input type="hidden" name="id" value={id} />
           <div className="form-grid">
@@ -115,7 +115,7 @@ export default async function EditPasienPage({
             </div>
           </div>
 
-          <div style={{ display: "flex", gap: "12px", marginTop: "28px" }}>
+          <div className="form-actions">
             <button type="submit" className="btn-primary" id="btn-update-pasien">
               Simpan Perubahan
             </button>

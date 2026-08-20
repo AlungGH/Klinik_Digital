@@ -140,16 +140,7 @@ export default function ResepForm({
             {obatItems.map((item, index) => (
               <div
                 key={index}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "2fr 100px 100px 1fr auto",
-                  gap: "10px",
-                  alignItems: "end",
-                  padding: "14px",
-                  background: "var(--bg-item)",
-                  border: "1px solid var(--border-subtle)",
-                  borderRadius: "10px",
-                }}
+                className="obat-row"
               >
                 {/* Obat text */}
                 <div>
@@ -238,7 +229,7 @@ export default function ResepForm({
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: "12px", paddingTop: "8px" }}>
+        <div className="form-actions" style={{ marginTop: "8px" }}>
           <button type="submit" className="btn-primary" id="btn-simpan-resep">
             Simpan Resep
           </button>

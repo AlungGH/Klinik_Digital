@@ -209,6 +209,44 @@ body {
   margin-bottom: 6px;
 }
 
+/* Forms & Form Grids */
+.form-card {
+  padding: 32px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.full-width {
+  grid-column: span 2;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.obat-row {
+  display: grid;
+  grid-template-columns: 2fr 100px 100px 1fr auto;
+  gap: 10px;
+  align-items: end;
+  padding: 14px;
+  background: var(--bg-item);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+}
+
+
 /* Badges */
 .badge {
   display: inline-flex;
@@ -548,8 +586,54 @@ tr:hover td {
     padding: 20px;
   }
 
+  .form-card {
+    padding: 20px;
+  }
+
   .form-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .form-group.full-width {
+    grid-column: span 1;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .form-actions > * {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .obat-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .obat-row > div:nth-child(1) {
+    grid-column: span 2;
+  }
+
+  .obat-row > div:nth-child(2) {
+    grid-column: span 1;
+  }
+
+  .obat-row > div:nth-child(3) {
+    grid-column: span 1;
+  }
+
+  .obat-row > div:nth-child(4) {
+    grid-column: span 2;
+  }
+
+  .obat-row > button:nth-child(5) {
+    grid-column: span 2;
+    width: 100% !important;
   }
 
   .stats-grid {
