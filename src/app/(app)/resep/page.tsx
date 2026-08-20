@@ -3,6 +3,11 @@ import Link from "next/link";
 import { ClipboardList, Plus, Calendar } from "lucide-react";
 import { deleteResep } from "@/app/actions/resepActions";
 import type { Metadata } from "next";
+import type { Prisma } from "@prisma/client";
+
+type ResepWithRelations = Prisma.ResepGetPayload<{
+  include: { pasien: { select: { nama: true; noRm: true } }; resepDetail: true };
+}>;
 
 export const metadata: Metadata = { title: "Data Resep — Klinik Digital" };
 
@@ -15,8 +20,8 @@ export default async function ResepPage() {
     },
   });
 
-  const grouped = resepList.reduce<Record<string, typeof resepList>>(
-    (acc, resep) => {
+  const grouped = resepList.reduce<Record<string, ResepWithRelations[]>>(
+    (acc: Record<string, ResepWithRelations[]>, resep: ResepWithRelations) => {
       const dateKey = new Date(resep.tanggal).toLocaleDateString("id-ID", {
         weekday: "long",
         year: "numeric",
@@ -57,7 +62,7 @@ export default async function ResepPage() {
         </div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
-          {Object.entries(grouped).map(([date, reseps]) => (
+          {Object.entries(grouped).map(([date, reseps]: [string, ResepWithRelations[]]) => (
             <div key={date}>
               <div
                 style={{
@@ -76,7 +81,7 @@ export default async function ResepPage() {
               </div>
 
               <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                {reseps.map((resep) => (
+                {(reseps as ResepWithRelations[]).map((resep: ResepWithRelations) => (
                   <Link
                     key={resep.id}
                     href={`/resep/${resep.id}`}
@@ -123,7 +128,7 @@ export default async function ResepPage() {
                       </div>
 
                       <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", maxWidth: "300px" }}>
-                        {resep.resepDetail.slice(0, 3).map((d) => (
+                        {resep.resepDetail.slice(0, 3).map((d: ResepWithRelations["resepDetail"][number]) => (
                           <span key={d.id} className="badge badge-green" style={{ fontSize: "11px" }}>
                             {d.namaObat}
                           </span>
