@@ -91,14 +91,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Stats Grid */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "20px",
-          marginBottom: "32px",
-        }}
-      >
+      <div className="stats-grid">
         {stats.map((stat) => {
           const Icon = stat.icon;
           return (
@@ -116,7 +109,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Quick Actions + Recent */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "24px" }}>
+      <div className="dashboard-grid">
         {/* Quick Actions */}
         <div className="glass-card" style={{ padding: "24px" }}>
           <h2
