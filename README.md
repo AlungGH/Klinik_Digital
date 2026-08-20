@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏥 Klinik Digital
 
-## Getting Started
+Sistem Manajemen Pasien & Obat berbasis web, dibangun dengan **Next.js 14**, **PostgreSQL (Neon)**, dan **NextAuth.js (GitHub OAuth)**.
 
-First, run the development server:
+---
+
+## 🚀 Deploy ke Vercel (Gratis)
+
+### Langkah 1 — Setup Database Neon
+
+1. Daftar/login di [neon.tech](https://neon.tech) menggunakan akun GitHub
+2. Klik **"New Project"** → beri nama `klinik-db`
+3. Setelah project dibuat, buka tab **"Connection Details"**
+4. Copy **connection string** (format: `postgresql://user:pass@host/db?sslmode=require`)
+
+### Langkah 2 — Buat GitHub OAuth App
+
+1. Buka [github.com/settings/developers](https://github.com/settings/developers)
+2. Klik **"New OAuth App"**
+3. Isi form:
+   - **Application name**: `Klinik Digital`
+   - **Homepage URL**: `https://NAMA-PROJECT.vercel.app`
+   - **Authorization callback URL**: `https://NAMA-PROJECT.vercel.app/api/auth/callback/github`
+4. Klik **"Register application"**
+5. Copy **Client ID** dan **Client Secret**
+
+### Langkah 3 — Push ke GitHub
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git add .
+git commit -m "feat: initial klinik digital app"
+git remote add origin https://github.com/USERNAME/REPO-NAME.git
+git push -u origin main
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Langkah 4 — Deploy ke Vercel
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Buka [vercel.com](https://vercel.com) dan login dengan GitHub
+2. Klik **"New Project"** → import repository Anda
+3. Di bagian **"Environment Variables"**, tambahkan:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Key | Value |
+|-----|-------|
+| `DATABASE_URL` | Connection string dari Neon |
+| `NEXTAUTH_SECRET` | String random panjang |
+| `NEXTAUTH_URL` | URL Vercel Anda (contoh: `https://klinik.vercel.app`) |
+| `GITHUB_ID` | Client ID dari GitHub OAuth App |
+| `GITHUB_SECRET` | Client Secret dari GitHub OAuth App |
 
-## Learn More
+4. Klik **"Deploy"**
 
-To learn more about Next.js, take a look at the following resources:
+### Langkah 5 — Inisialisasi Database
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Setelah deploy berhasil, jalankan perintah ini sekali:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npx prisma db push
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 💻 Jalankan Lokal
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm install
+cp .env.example .env.local
+# Edit .env.local dengan nilai Anda
+npx prisma db push
+npm run dev
+```
+
+Buka [http://localhost:3000](http://localhost:3000)
+
+---
+
+## ✨ Fitur
+
+- Login GitHub OAuth
+- Manajemen Pasien (CRUD + pencarian)
+- Manajemen Obat (inventaris + tracking stok)
+- Resep multi-obat (stok otomatis berkurang)
+- Dashboard statistik realtime
