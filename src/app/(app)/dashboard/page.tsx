@@ -19,10 +19,9 @@ export const metadata: Metadata = {
 export default async function DashboardPage() {
   const session = await auth();
 
-  const [totalPasien, totalObat, totalResep, resepHariIni, resepTerbaru] =
+  const [totalPasien, totalResep, resepHariIni, resepTerbaru] =
     await Promise.all([
       prisma.pasien.count(),
-      prisma.obat.count(),
       prisma.resep.count(),
       prisma.resep.count({
         where: {
@@ -36,9 +35,7 @@ export default async function DashboardPage() {
         orderBy: { createdAt: "desc" },
         include: {
           pasien: { select: { nama: true, noRm: true } },
-          resepDetail: {
-            include: { obat: { select: { namaObat: true } } },
-          },
+          resepDetail: true,
         },
       }),
     ]);
@@ -51,13 +48,7 @@ export default async function DashboardPage() {
       color: "blue",
       href: "/pasien",
     },
-    {
-      label: "Jenis Obat",
-      value: totalObat,
-      icon: Pill,
-      color: "green",
-      href: "/obat",
-    },
+
     {
       label: "Total Resep",
       value: totalResep,
@@ -147,10 +138,7 @@ export default async function DashboardPage() {
               <ClipboardList size={16} />
               Buat Resep Baru
             </Link>
-            <Link href="/obat" className="btn-secondary" id="btn-kelola-obat">
-              <Pill size={16} />
-              Kelola Obat
-            </Link>
+
           </div>
         </div>
 

@@ -14,6 +14,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { deletePasien } from "@/app/actions/pasienActions";
+import DeleteButton from "@/components/DeleteButton";
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -39,9 +40,7 @@ export default async function DetailPasienPage({
       resep: {
         orderBy: { tanggal: "desc" },
         include: {
-          resepDetail: {
-            include: { obat: true },
-          },
+          resepDetail: true,
         },
       },
     },
@@ -173,16 +172,10 @@ export default async function DetailPasienPage({
                 await deletePasien(id);
               }}
             >
-              <button
-                type="submit"
-                className="btn-danger"
-                style={{ width: "100%" }}
-                id={`btn-hapus-pasien-${id}`}
-                onClick={() => confirm("Yakin hapus pasien ini? Semua resep akan ikut terhapus.")}
-              >
-                <Trash2 size={15} />
-                Hapus Pasien
-              </button>
+              <DeleteButton 
+                id={`btn-hapus-pasien-${id}`} 
+                confirmMessage="Yakin hapus pasien ini? Semua resep akan ikut terhapus."
+              />
             </form>
           </div>
         </div>
@@ -282,7 +275,7 @@ export default async function DetailPasienPage({
                         >
                           <Pill size={12} color="#34d399" />
                           <span style={{ fontSize: "12px", color: "#34d399", fontWeight: "500" }}>
-                            {detail.obat.namaObat} — {detail.jumlah} {detail.obat.satuan}
+                            {detail.namaObat} — {detail.jumlah} {detail.satuan}
                           </span>
                         </div>
                       ))}

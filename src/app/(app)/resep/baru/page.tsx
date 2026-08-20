@@ -13,10 +13,9 @@ export default async function BuatResepPage({
 }) {
   const { pasienId } = await searchParams;
 
-  const [pasienList, obatList] = await Promise.all([
-    prisma.pasien.findMany({ orderBy: { nama: "asc" }, select: { id: true, nama: true, noRm: true } }),
-    prisma.obat.findMany({ where: { stok: { gt: 0 } }, orderBy: { namaObat: "asc" } }),
-  ]);
+  const pasienList = await prisma.pasien.findMany({
+    orderBy: { nama: "asc" },
+  });
 
   return (
     <div className="content-area fade-in">
@@ -42,30 +41,7 @@ export default async function BuatResepPage({
       </div>
 
       <div className="glass-card" style={{ padding: "32px", maxWidth: "800px" }}>
-        {obatList.length === 0 && (
-          <div
-            style={{
-              padding: "14px 18px",
-              background: "rgba(245,158,11,0.1)",
-              border: "1px solid rgba(245,158,11,0.25)",
-              borderRadius: "10px",
-              marginBottom: "24px",
-              fontSize: "13px",
-              color: "#fbbf24",
-            }}
-          >
-            ⚠️ Belum ada obat dengan stok tersedia.{" "}
-            <Link href="/obat/baru" style={{ color: "#60a5fa", textDecoration: "underline" }}>
-              Tambah obat terlebih dahulu
-            </Link>
-          </div>
-        )}
-
-        <ResepForm
-          obatList={obatList}
-          pasienList={pasienList}
-          defaultPasienId={pasienId}
-        />
+        <ResepForm pasienList={pasienList} defaultPasienId={pasienId} />
       </div>
     </div>
   );

@@ -5,11 +5,10 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Users,
-  Pill,
-  ClipboardList,
   Activity,
   LogOut,
 } from "lucide-react";
+import { useTheme } from "@/components/ThemeProvider";
 
 interface SidebarProps {
   userName?: string | null;
@@ -20,8 +19,6 @@ interface SidebarProps {
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/pasien", label: "Pasien", icon: Users },
-  { href: "/obat", label: "Obat", icon: Pill },
-  { href: "/resep", label: "Resep", icon: ClipboardList },
 ];
 
 export default function Sidebar({ userName, userImage, onSignOut }: SidebarProps) {

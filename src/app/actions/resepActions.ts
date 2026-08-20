@@ -11,7 +11,8 @@ export async function createResep(formData: FormData) {
   const tanggal = formData.get("tanggal") as string;
 
   // Parse obat items
-  const obatIds = formData.getAll("obatId") as string[];
+  const namaObatList = formData.getAll("namaObat") as string[];
+  const satuanList = formData.getAll("satuan") as string[];
   const jumlahList = formData.getAll("jumlah") as string[];
   const aturanList = formData.getAll("aturanPakai") as string[];
 
@@ -22,22 +23,15 @@ export async function createResep(formData: FormData) {
       catatan: catatan || null,
       tanggal: tanggal ? new Date(tanggal) : new Date(),
       resepDetail: {
-        create: obatIds.map((obatId, i) => ({
-          obatId,
+        create: namaObatList.map((namaObat, i) => ({
+          namaObat,
+          satuan: satuanList[i],
           jumlah: parseInt(jumlahList[i], 10),
           aturanPakai: aturanList[i],
         })),
       },
     },
   });
-
-  // Kurangi stok obat
-  for (let i = 0; i < obatIds.length; i++) {
-    await prisma.obat.update({
-      where: { id: obatIds[i] },
-      data: { stok: { decrement: parseInt(jumlahList[i], 10) } },
-    });
-  }
 
   revalidatePath("/resep");
   revalidatePath("/dashboard");

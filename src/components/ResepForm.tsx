@@ -4,12 +4,7 @@ import { useState } from "react";
 import { createResep } from "@/app/actions/resepActions";
 import { Plus, Trash2 } from "lucide-react";
 
-interface Obat {
-  id: string;
-  namaObat: string;
-  satuan: string;
-  stok: number;
-}
+
 
 interface Pasien {
   id: string;
@@ -18,22 +13,20 @@ interface Pasien {
 }
 
 interface ResepFormProps {
-  obatList: Obat[];
   pasienList: Pasien[];
   defaultPasienId?: string;
 }
 
 export default function ResepForm({
-  obatList,
   pasienList,
   defaultPasienId,
 }: ResepFormProps) {
   const [obatItems, setObatItems] = useState([
-    { obatId: "", jumlah: 1, aturanPakai: "" },
+    { namaObat: "", satuan: "", jumlah: 1, aturanPakai: "" },
   ]);
 
   const addObatRow = () => {
-    setObatItems([...obatItems, { obatId: "", jumlah: 1, aturanPakai: "" }]);
+    setObatItems([...obatItems, { namaObat: "", satuan: "", jumlah: 1, aturanPakai: "" }]);
   };
 
   const removeObatRow = (index: number) => {
@@ -149,35 +142,47 @@ export default function ResepForm({
                 key={index}
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "2fr 100px 1fr auto",
+                  gridTemplateColumns: "2fr 100px 100px 1fr auto",
                   gap: "10px",
                   alignItems: "end",
                   padding: "14px",
-                  background: "rgba(17,24,39,0.6)",
-                  border: "1px solid rgba(30,45,74,0.5)",
+                  background: "var(--bg-item)",
+                  border: "1px solid var(--border-subtle)",
                   borderRadius: "10px",
                 }}
               >
-                {/* Obat dropdown */}
+                {/* Obat text */}
                 <div>
                   <label className="label" style={{ fontSize: "11px" }}>
                     Nama Obat
                   </label>
-                  <select
-                    name="obatId"
+                  <input
+                    name="namaObat"
+                    type="text"
                     required
                     className="input-field"
-                    value={item.obatId}
-                    onChange={(e) => updateObatRow(index, "obatId", e.target.value)}
-                    id={`obat-select-${index}`}
-                  >
-                    <option value="">-- Pilih Obat --</option>
-                    {obatList.map((o) => (
-                      <option key={o.id} value={o.id}>
-                        {o.namaObat} (Stok: {o.stok} {o.satuan})
-                      </option>
-                    ))}
-                  </select>
+                    placeholder="Contoh: Paracetamol"
+                    value={item.namaObat}
+                    onChange={(e) => updateObatRow(index, "namaObat", e.target.value)}
+                    id={`namaObat-${index}`}
+                  />
+                </div>
+
+                {/* Satuan */}
+                <div>
+                  <label className="label" style={{ fontSize: "11px" }}>
+                    Satuan
+                  </label>
+                  <input
+                    name="satuan"
+                    type="text"
+                    required
+                    className="input-field"
+                    placeholder="Contoh: tablet"
+                    value={item.satuan}
+                    onChange={(e) => updateObatRow(index, "satuan", e.target.value)}
+                    id={`satuan-${index}`}
+                  />
                 </div>
 
                 {/* Jumlah */}

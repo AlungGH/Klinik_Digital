@@ -16,7 +16,10 @@ export default async function EditPasienPage({
   const pasien = await prisma.pasien.findUnique({ where: { id } });
   if (!pasien) notFound();
 
-  const action = updatePasien.bind(null, id);
+  const action = async (formData: FormData) => {
+    "use server";
+    await updatePasien(id, formData);
+  };
 
   return (
     <div className="content-area fade-in">

@@ -1,14 +1,31 @@
 import NextAuth from "next-auth";
-import GitHub from "next-auth/providers/github";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma } from "@/lib/prisma";
+import Credentials from "next-auth/providers/credentials";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: PrismaAdapter(prisma),
   providers: [
-    GitHub({
-      clientId: process.env.GITHUB_ID!,
-      clientSecret: process.env.GITHUB_SECRET!,
+    Credentials({
+      name: "Login",
+      credentials: {
+        username: { label: "Username", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        const validUser = process.env.APP_USERNAME ?? "admin";
+        const validPass = process.env.APP_PASSWORD ?? "admin123";
+
+        if (
+          credentials?.username === validUser &&
+          credentials?.password === validPass
+        ) {
+          return {
+            id: "demo-user-1",
+            name: "Administrator Klinik",
+            email: "admin@klinik.com",
+            image: null,
+          };
+        }
+        return null;
+      },
     }),
   ],
   pages: {

@@ -11,6 +11,7 @@ import {
   ClipboardList,
 } from "lucide-react";
 import { deleteResep } from "@/app/actions/resepActions";
+import DeleteButton from "@/components/DeleteButton";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Detail Resep — Klinik Digital" };
@@ -26,9 +27,7 @@ export default async function DetailResepPage({
     where: { id },
     include: {
       pasien: true,
-      resepDetail: {
-        include: { obat: true },
-      },
+      resepDetail: true,
     },
   });
 
@@ -190,14 +189,10 @@ export default async function DetailResepPage({
                 await deleteResep(id);
               }}
             >
-              <button
-                type="submit"
-                className="btn-danger"
+              <DeleteButton
                 id={`btn-hapus-resep-${id}`}
-              >
-                <Trash2 size={14} />
-                Hapus
-              </button>
+                confirmMessage="Yakin hapus resep ini?"
+              />
             </form>
           </div>
         </div>
@@ -239,10 +234,10 @@ export default async function DetailResepPage({
                   }}
                 >
                   <div style={{ fontWeight: "700", color: "#f1f5f9", fontSize: "15px" }}>
-                    {idx + 1}. {detail.obat.namaObat}
+                    {idx + 1}. {detail.namaObat}
                   </div>
                   <span className="badge badge-green">
-                    {detail.jumlah} {detail.obat.satuan}
+                    {detail.jumlah} {detail.satuan}
                   </span>
                 </div>
                 <div style={{ fontSize: "13px", color: "#94a3b8" }}>

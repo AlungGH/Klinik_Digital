@@ -11,9 +11,7 @@ export default async function ResepPage() {
     orderBy: { tanggal: "desc" },
     include: {
       pasien: { select: { nama: true, noRm: true } },
-      resepDetail: {
-        include: { obat: { select: { namaObat: true, satuan: true } } },
-      },
+      resepDetail: true,
     },
   });
 
@@ -127,7 +125,7 @@ export default async function ResepPage() {
                       <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", maxWidth: "300px" }}>
                         {resep.resepDetail.slice(0, 3).map((d) => (
                           <span key={d.id} className="badge badge-green" style={{ fontSize: "11px" }}>
-                            {d.obat.namaObat}
+                            {d.namaObat}
                           </span>
                         ))}
                         {resep.resepDetail.length > 3 && (

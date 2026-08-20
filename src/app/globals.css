@@ -1,26 +1,69 @@
 @import "tailwindcss";
 
-:root {
+:root,
+[data-theme="dark"] {
   --bg-primary: #0a0f1e;
   --bg-secondary: #0d1426;
   --bg-card: #111827;
   --bg-card-hover: #1a2540;
+  --bg-item: rgba(17,24,39,0.8);
+  --bg-subtle: rgba(30,45,74,0.5);
   --border: #1e2d4a;
+  --border-subtle: rgba(30,45,74,0.5);
   --accent: #3b82f6;
   --accent-light: #60a5fa;
   --accent-glow: rgba(59, 130, 246, 0.15);
+  --accent-bg: rgba(59,130,246,0.10);
   --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
   --text-muted: #475569;
   --success: #10b981;
+  --success-bg: rgba(16,185,129,0.10);
+  --success-border: rgba(16,185,129,0.20);
+  --success-text: #34d399;
   --warning: #f59e0b;
+  --warning-bg: rgba(245,158,11,0.08);
+  --warning-border: rgba(245,158,11,0.20);
+  --warning-text: #fbbf24;
   --danger: #ef4444;
+  --row-border: rgba(30,45,74,0.5);
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --bg-primary: #f1f5f9;
+  --bg-secondary: #e2e8f0;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8fafc;
+  --bg-item: rgba(248,250,252,0.9);
+  --bg-subtle: rgba(203,213,225,0.4);
+  --border: #cbd5e1;
+  --border-subtle: rgba(203,213,225,0.6);
+  --accent: #2563eb;
+  --accent-light: #3b82f6;
+  --accent-glow: rgba(37, 99, 235, 0.12);
+  --accent-bg: rgba(37,99,235,0.08);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --success: #059669;
+  --success-bg: rgba(5,150,105,0.08);
+  --success-border: rgba(5,150,105,0.20);
+  --success-text: #059669;
+  --warning: #d97706;
+  --warning-bg: rgba(217,119,6,0.08);
+  --warning-border: rgba(217,119,6,0.20);
+  --warning-text: #d97706;
+  --danger: #dc2626;
+  --row-border: rgba(203,213,225,0.7);
+  color-scheme: light;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 html {
@@ -526,4 +569,74 @@ tr:hover td {
 .tab-item.active {
   background: var(--accent);
   color: white;
+}
+
+/* ============ Light Mode Overrides ============ */
+/* Fix elements that use hardcoded dark rgba values */
+
+[data-theme="light"] .glass-card {
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+[data-theme="light"] .glass-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  border-color: rgba(37,99,235,0.3);
+}
+
+/* Table row border override */
+[data-theme="light"] td {
+  border-bottom-color: var(--row-border);
+}
+
+/* Resep/dashboard recent item cards */
+[data-theme="light"] [style*="rgba(17,24,39"],
+[data-theme="light"] [style*="rgba(17, 24, 39"] {
+  background: var(--bg-item) !important;
+  border-color: var(--border) !important;
+}
+
+/* Inline dark border overrides */
+[data-theme="light"] [style*="rgba(30,45,74"],
+[data-theme="light"] [style*="rgba(30, 45, 74"] {
+  background: var(--bg-subtle) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+/* Fix text colors in light mode for hardcoded hex values */
+[data-theme="light"] [style*="color: \"#f1f5f9\""],
+[data-theme="light"] [style*="color: '#f1f5f9'"] {
+  color: var(--text-primary) !important;
+}
+[data-theme="light"] [style*="color: \"#94a3b8\""],
+[data-theme="light"] [style*="color: '#94a3b8'"] {
+  color: var(--text-secondary) !important;
+}
+[data-theme="light"] [style*="color: \"#475569\""],
+[data-theme="light"] [style*="color: '#475569'"] {
+  color: var(--text-muted) !important;
+}
+
+/* Success pill/badge cards in light mode */
+[data-theme="light"] [style*="rgba(16,185,129"],
+[data-theme="light"] [style*="rgba(16, 185, 129"] {
+  background: var(--success-bg) !important;
+  border-color: var(--success-border) !important;
+}
+
+/* Warning note cards in light mode */
+[data-theme="light"] [style*="rgba(245,158,11"],
+[data-theme="light"] [style*="rgba(245, 158, 11"] {
+  background: var(--warning-bg) !important;
+  border-color: var(--warning-border) !important;
+}
+
+/* Accent bg in light mode */
+[data-theme="light"] [style*="rgba(59,130,246"],
+[data-theme="light"] [style*="rgba(59, 130, 246"] {
+  background: var(--accent-bg) !important;
+}
+
+/* Sidebar user card in light mode */
+[data-theme="light"] .sidebar-footer [style*="rgba(30,45,74"] {
+  background: var(--bg-card-hover) !important;
 }

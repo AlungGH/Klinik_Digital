@@ -10,24 +10,33 @@ export const metadata: Metadata = {
 export default async function PasienPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; page?: string }>;
 }) {
-  const { q } = await searchParams;
+  const { q, page: pageStr } = await searchParams;
+  const page = parseInt(pageStr || "1", 10);
+  const pageSize = 10;
+
+  const whereCondition = q
+    ? {
+        OR: [
+          { nama: { contains: q, mode: "insensitive" } },
+          { noRm: { contains: q, mode: "insensitive" } },
+          { noTelepon: { contains: q } },
+        ],
+      }
+    : undefined;
+
+  const totalPasien = await prisma.pasien.count({ where: whereCondition as any });
+  const totalPages = Math.ceil(totalPasien / pageSize);
 
   const pasienList = await prisma.pasien.findMany({
-    where: q
-      ? {
-          OR: [
-            { nama: { contains: q, mode: "insensitive" } },
-            { noRm: { contains: q, mode: "insensitive" } },
-            { noTelepon: { contains: q } },
-          ],
-        }
-      : undefined,
+    where: whereCondition as any,
     orderBy: { createdAt: "desc" },
     include: {
       _count: { select: { resep: true } },
     },
+    skip: (page - 1) * pageSize,
+    take: pageSize,
   });
 
   return (
@@ -35,7 +44,7 @@ export default async function PasienPage({
       <div className="page-header">
         <div>
           <h1 className="page-title">Data Pasien</h1>
-          <p className="page-subtitle">{pasienList.length} pasien terdaftar</p>
+          <p className="page-subtitle">{totalPasien} pasien terdaftar</p>
         </div>
         <Link href="/pasien/baru" className="btn-primary" id="btn-tambah-pasien-baru">
           <Plus size={16} />
@@ -134,6 +143,31 @@ export default async function PasienPage({
                 ))}
               </tbody>
             </table>
+          </div>
+        )}
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "10px", padding: "16px", borderTop: "1px solid #1e293b" }}>
+            {page > 1 ? (
+              <Link href={`/pasien?page=${page - 1}${q ? `&q=${q}` : ""}`} className="btn-secondary">
+                Sebelumnya
+              </Link>
+            ) : (
+              <div style={{ width: "114.73px" }} /> // Placeholder to center text
+            )}
+            
+            <span style={{ fontSize: "14px", color: "#94a3b8", fontWeight: "500", minWidth: "120px", textAlign: "center" }}>
+              Halaman {page} dari {totalPages}
+            </span>
+            
+            {page < totalPages ? (
+              <Link href={`/pasien?page=${page + 1}${q ? `&q=${q}` : ""}`} className="btn-secondary">
+                Selanjutnya
+              </Link>
+            ) : (
+              <div style={{ width: "114.73px" }} />
+            )}
           </div>
         )}
       </div>
